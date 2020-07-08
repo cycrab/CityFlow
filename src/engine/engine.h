@@ -115,6 +115,15 @@ namespace CityFlow {
         std::mt19937 rnd;
 
         Engine(const std::string &configFile, int threadNum);
+//在engine中写接口函数以对bus各种属性的设定
+//在头文件engine.h中加入函数的声明
+ std::map<std::string, int> getVehiclePassenger() const;//获取所有公交车的人数
+ void setVehiclePassenger(const std::string &id, int passenger);//设置某公交车的上下车人数
+ std::map<std::string, bool> getVehicletype() const;//获取所有车辆是否为公交车的信息
+ void setVehicletype(const std::string &id, bool isbus);//设置某车为公交车
+ std::map<std::string, std::string>  getBusstation(const std::string &id) const;//获取某公交车的公交车站信息
+ void addBusstation(const std::string &id, std::string road,double position);//添加某公交车的一个公交车站信息
+ void deleteBusstation(const std::string &id);//删除某公交车最近添加的一个公交车站
 
         double getInterval() const { return interval; }
 
