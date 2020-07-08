@@ -13,6 +13,13 @@ PYBIND11_MODULE(cityflow, m) {
             "config_file"_a,
             "thread_num"_a=1
         )
+	    .def("get_vehicle_busstation", &CityFlow::Engine::getBusstation,"vehicle_id"_a)
+        .def("add_vehicle_busstation", &CityFlow::Engine::addBusstation, "vehicle_id"_a, "road"_a, "position"_a)
+        .def("delete_vehicle_busstation", &CityFlow::Engine::deleteBusstation,"vehicle_id"_a)
+	    .def("get_vehicle_passenger", &CityFlow::Engine::getVehiclePassenger)
+        .def("set_vehicle_passenger", &CityFlow::Engine::setVehiclePassenger, "vehicle_id"_a, "passenger"_a)
+        .def("get_vehicle_type", &CityFlow::Engine::getVehicletype)
+        .def("set_vehicle_type", &CityFlow::Engine::setVehicletype, "vehicle_id"_a, "isbus"_a)
         .def("next_step", &CityFlow::Engine::nextStep)
         .def("get_vehicle_count", &CityFlow::Engine::getVehicleCount)
         .def("get_vehicles", &CityFlow::Engine::getVehicles, "include_waiting"_a=false)
