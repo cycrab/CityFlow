@@ -110,6 +110,10 @@ namespace CityFlow {
 
         bool routeValid = false;
         Flow *flow;
+//add properties to vehicle
+int passenger=0;
+int totalstops=0;
+bool isbus=0;
 
     public:
 
@@ -120,7 +124,34 @@ namespace CityFlow {
         Vehicle(const Vehicle &vehicle, const std::string &id, Engine *engine, Flow *flow = nullptr);
 
         Vehicle(const VehicleInfo &init, const std::string &id, Engine *engine, Flow *flow = nullptr);
-
+//add properties and functions to vehicle
+struct Busstation
+{
+std::string road{""};
+double position=0.0;
+};
+Busstation busstation[50];
+int get_passenger() const {return passenger;};
+bool getvehicletype() const {return isbus;};
+void passenger_change(int people){passenger+=people;};
+void setvehicletype(bool bus=1){isbus=bus;};
+void addbusstation(std::string road,double position){busstation[totalstops].road=road;busstation[totalstops].position=position;totalstops+=1;};
+void deletebusstation(){totalstops=totalstops-1;};
+int getbusstop() const {return totalstops;};
+std::map<std::string, std::string> getbusstation(int totalstops) const{
+   int i;
+   std::string a[50],b[50];
+   std::map<std::string, std::string> busstations;
+   for(i=0;i<getbusstop();i++){
+   a[i] ="road"+std::to_string(i+1);
+   b[i]="road"+std::to_string(i+1);
+   }
+   for(i=0;i<getbusstop();i++){
+   busstations[a[i]] =busstation[i].road;
+   busstations[b[i]] = std::to_string(busstation[i].position);
+   }
+   return busstations;
+};
         void setDeltaDistance(double dis);
 
         void setSpeed(double speed);
@@ -366,7 +397,26 @@ namespace CityFlow {
         std::map<std::string, std::string> getInfo() const;
 
      };
-
+    class Bus:Vehicle{
+ private:
+int passenenger;
+int busstop=0;
+//Busstation[50] busstation;
+public:
+Bus(const Vehicle &vehicle, Flow *flow =nullptr,int pass=0):Vehicle(vehicle, flow)//利用原有的构造函数建立子类的构造函数
+{passenenger=pass;
+};
+Bus(const Vehicle &vehicle, const std::string &id, Engine *engine, Flow *flow = nullptr,int pass=0):Vehicle(vehicle,id,engine, flow)
+{passenenger=pass;
+};
+Bus(const VehicleInfo &init, const std::string &id, Engine *engine, Flow *flow = nullptr,int pass=0):Vehicle(init,id,engine, flow)
+{passenenger=pass;
+};
+int get_passenenger(){return passenenger;};
+void passenenger_change(int people){passenenger+=people;}
+//void add_bussstation(Busstation b){busstation[busstop]=b;busstop+=1;}
+//Busstation* get_busstation(return busstation);
+};
 }
 
 #endif
