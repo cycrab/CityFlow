@@ -32,6 +32,64 @@ namespace CityFlow {
         }
 
     }
+//在源文件engine.cpp中加入函数的实现
+std::map<std::string, int> Engine::getVehiclePassenger() const {
+        std::map<std::string, int> ret;
+        for (const Vehicle* vehicle : getRunningVehicles()) {
+            ret.emplace(vehicle->getId(), vehicle->get_passenger());
+        }
+        return ret;
+    }
+void Engine::setVehiclePassenger(const std::string &id, int passengerchange) {
+        auto iter = vehicleMap.find(id);
+        if (iter == vehicleMap.end()) {
+            throw std::runtime_error("Vehicle '" + id + "' not found");
+        }else {
+            iter->second->passenger_change(passengerchange);
+        }
+    }
+std::map<std::string, bool> Engine::getVehicletype() const {
+        std::map<std::string, bool> ret;
+        for (const Vehicle* vehicle : getRunningVehicles()) {
+            ret.emplace(vehicle->getId(), vehicle->getvehicletype());
+        }
+        return ret;
+    }
+void Engine::setVehicletype(const std::string &id, bool isbus) {
+        auto iter = vehicleMap.find(id);
+        if (iter == vehicleMap.end()) {
+            throw std::runtime_error("Vehicle '" + id + "' not found");
+        }else {
+            iter->second->setvehicletype(isbus);
+        }
+    }
+    
+std::map<std::string, std::string> Engine::getBusstation(const std::string &id) const {
+        auto iter = vehicleMap.find(id);
+        if (iter == vehicleMap.end()) {
+            throw std::runtime_error("Vehicle '" + id + "' not found");
+        }else {
+            Vehicle *vehicle = iter->second;
+            return vehicle->getbusstation(vehicle->getbusstop());
+        }
+    }
+void Engine::addBusstation(const std::string &id,std::string road,double position) {
+        auto iter = vehicleMap.find(id);
+        if (iter == vehicleMap.end()) {
+            throw std::runtime_error("Vehicle '" + id + "' not found");
+        }else {
+            iter->second->addbusstation(road,position);
+        }
+    }
+void Engine::deleteBusstation(const std::string &id) {
+        auto iter = vehicleMap.find(id);
+        if (iter == vehicleMap.end()) {
+            throw std::runtime_error("Vehicle '" + id + "' not found");
+        }else {
+            iter->second->deletebusstation();
+        }
+    }
+
 
 
     bool Engine::loadConfig(const std::string &configFile) {
